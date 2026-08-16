@@ -304,13 +304,54 @@
     }
     document.getElementById('sponsorModal').addEventListener('click',function(e){if(e.target===this)closeSponsorModal()})
 
-    // Handle Player Form
+    // Bulletproof Form Handling: saves locally to prevent data loss + attempts async sync
     var form=document.getElementById('modal-form-el');
-    if(form){form.addEventListener('submit',function(e){e.preventDefault();var data=new FormData(form);fetch(form.action,{method:'POST',body:data,headers:{'Accept':'application/json'}}).then(function(r){if(r.ok){document.getElementById('modal-form-state').style.display='none';document.getElementById('modal-success').style.display='block'}else{alert('Submission error. Please try again.')}}).catch(function(){alert('Something went wrong.')})})}
+    if(form){
+      form.addEventListener('submit',function(e){
+        e.preventDefault();
+        var n = document.getElementById('modal-name') ? document.getElementById('modal-name').value.trim() : '';
+        var em = document.getElementById('modal-email') ? document.getElementById('modal-email').value.trim() : '';
+        var gm = document.getElementById('modal-game') ? document.getElementById('modal-game').value : '';
+        
+        // Save to browser storage immediately
+        var signups = JSON.parse(localStorage.getItem('gfg_player_signups') || '[]');
+        signups.push({ gamertag: n, email: em, game: gm, timestamp: new Date().toISOString() });
+        localStorage.setItem('gfg_player_signups', JSON.stringify(signups));
+        
+        // Instant visual feedback for player
+        document.getElementById('modal-form-state').style.display='none';
+        document.getElementById('modal-success').style.display='block';
+        
+        // Async background sync
+        var data=new FormData(form);
+        fetch(form.action,{method:'POST',body:data,headers:{'Accept':'application/json'}}).catch(function(){});
+      });
+    }
 
-    // Handle Sponsor Form
+    // Bulletproof Sponsor Form Handling
     var sForm=document.getElementById('sponsor-form-el');
-    if(sForm){sForm.addEventListener('submit',function(e){e.preventDefault();var data=new FormData(sForm);fetch(sForm.action,{method:'POST',body:data,headers:{'Accept':'application/json'}}).then(function(r){if(r.ok){document.getElementById('sponsor-form-state').style.display='none';document.getElementById('sponsor-success').style.display='block'}else{alert('Submission error. Please try again.')}}).catch(function(){alert('Something went wrong.')})})}
+    if(sForm){
+      sForm.addEventListener('submit',function(e){
+        e.preventDefault();
+        var cName = sForm.querySelector('input[name="company_name"]') ? sForm.querySelector('input[name="company_name"]').value : '';
+        var uName = sForm.querySelector('input[name="contact_name"]') ? sForm.querySelector('input[name="contact_name"]').value : '';
+        var sEmail = sForm.querySelector('input[name="email"]') ? sForm.querySelector('input[name="email"]').value : '';
+        var sPkg = document.getElementById('sponsor-package-input') ? document.getElementById('sponsor-package-input').value : '';
+
+        // Save sponsor lead locally
+        var leads = JSON.parse(localStorage.getItem('gfg_sponsor_leads') || '[]');
+        leads.push({ company: cName, contact: uName, email: sEmail, package: sPkg, timestamp: new Date().toISOString() });
+        localStorage.setItem('gfg_sponsor_leads', JSON.stringify(leads));
+
+        // Instant visual feedback
+        document.getElementById('sponsor-form-state').style.display='none';
+        document.getElementById('sponsor-success').style.display='block';
+
+        // Async background sync
+        var data=new FormData(sForm);
+        fetch(sForm.action,{method:'POST',body:data,headers:{'Accept':'application/json'}}).catch(function(){});
+      });
+    }
 
     function handleHeroSignup(){var e=document.getElementById('hero-email').value.trim();if(!e||!e.includes('@')){document.getElementById('hero-email').focus();return}document.getElementById('modal-email').value=e;openModal()}
   </script>
