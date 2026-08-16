@@ -141,7 +141,8 @@
     <ul class="nav-links">
       <li><a href="#how-it-works">How It Works</a></li>
       <li><a href="#prizes">Prizes</a></li>
-      <li><a href="#leaderboard">Leaderboard</a></li>
+      <li><a href="#sponsors">Sponsors</a></li>
+      <li><a href="bracket.html">Bracket Verifier</a></li>
       <li><a href="#register" class="nav-cta" onclick="openModal()">Join Free</a></li>
     </ul>
   </nav>
@@ -204,6 +205,35 @@
       <div class="lb-row" style="opacity:0.4;cursor:default"><span class="lb-rank rank-3">🥉</span><div class="lb-player"><div class="player-avatar">?</div><div><div class="player-name">— Waitlist —</div><div class="player-tag">DFW Area</div></div></div><span class="lb-wins">—</span><span class="lb-earned">$40 GC</span></div>
     </div>
   </section>
+  <section id="sponsors" style="background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:6rem 2rem;">
+    <p class="section-label">For Brands & Local Businesses</p>
+    <h2 class="section-title">Sponsor a Community Tournament</h2>
+    <p class="section-sub">Reach 30–60+ high-intent Gen-Z and Millennial gamers at local DFW events. Fund real groceries in your brand's name.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;max-width:900px;margin:0 auto 3rem;">
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:2rem;">
+        <h3 style="font-size:1.3rem;margin-bottom:.5rem;">Single Event Title Sponsor</h3>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:2rem;font-weight:800;color:var(--green);margin-bottom:1rem;">$500 <span style="font-size:.9rem;color:var(--muted)">/ event</span></div>
+        <ul style="list-style:none;color:var(--muted);font-size:.95rem;display:flex;flex-direction:column;gap:.5rem;margin-bottom:1.5rem;">
+          <li>✓ Title branding: "Presented by [Your Brand]"</li>
+          <li>✓ $250 funded grocery gift card prize pool</li>
+          <li>✓ On-site banner & digital bracket placement</li>
+          <li>✓ Full post-event demographic & turnout ROI report</li>
+        </ul>
+        <button class="btn-primary" style="width:100%;justify-content:center;" onclick="openSponsorModal('Single Event Sponsor ($500)')">Inquire for $500 Pilot</button>
+      </div>
+      <div style="background:linear-gradient(135deg,rgba(0,230,118,0.05),rgba(59,130,246,0.05));border:1px solid rgba(0,230,118,0.3);border-radius:16px;padding:2rem;">
+        <h3 style="font-size:1.3rem;margin-bottom:.5rem;">Monthly Community Series</h3>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:2rem;font-weight:800;color:var(--green);margin-bottom:1rem;">$1,500 <span style="font-size:.9rem;color:var(--muted)">/ month</span></div>
+        <ul style="list-style:none;color:var(--muted);font-size:.95rem;display:flex;flex-direction:column;gap:.5rem;margin-bottom:1.5rem;">
+          <li>✓ Exclusive category sponsor (4 weekend events)</li>
+          <li>✓ Direct sample / custom promo code distribution</li>
+          <li>✓ Dedicated feature in player newsletter & social</li>
+          <li>✓ Priority multi-venue placement across DFW</li>
+        </ul>
+        <button class="btn-primary" style="width:100%;justify-content:center;" onclick="openSponsorModal('Monthly Series Sponsor ($1,500)')">Inquire for Monthly Series</button>
+      </div>
+    </div>
+  </section>
   <section class="register-section" id="register">
     <div class="register-card">
       <h2>Be a Founding Player.</h2>
@@ -216,13 +246,14 @@
     <div class="footer-logo">🛒 Gaming <span>for Groceries</span></div>
     <div class="footer-tagline">Play games. Win food. Help your community.</div>
     <ul class="footer-links">
-      <li><a href="#">About</a></li><li><a href="#">How It Works</a></li><li><a href="bracket.html">Bracket Verifier</a></li><li><a href="#">Prize Rules</a></li><li><a href="https://ggloop.io">Powered by GG Loop LLC</a></li>
+      <li><a href="#how-it-works">How It Works</a></li><li><a href="#sponsors">Sponsors</a></li><li><a href="bracket.html">Bracket Verifier</a></li><li><a href="#">Prize Rules</a></li><li><a href="https://ggloop.io">Powered by GG Loop LLC</a></li>
     </ul>
     <p class="footer-copy">2026 GG Loop LLC - Gaming for Groceries - All Rights Reserved</p>
   </footer>
+  <!-- Player Waitlist Modal -->
   <div class="modal-overlay" id="signupModal">
     <div class="modal">
-      <button class="modal-close" onclick="closeModal()">x</button>
+      <button class="modal-close" onclick="closeModal()">×</button>
       <div id="modal-form-state">
         <h3>Join the Waitlist — It's Free</h3>
         <p>Get notified first when the Dallas pilot launches. No credit card. No entry fee. Ever.</p>
@@ -230,20 +261,57 @@
           <input type="text" id="modal-name" name="gamertag" placeholder="Gamertag / Display Name" required />
           <input type="email" id="modal-email" name="email" placeholder="Email address" required />
           <select id="modal-game" name="game_type"><option value="" disabled selected>Favorite game type</option><option value="FPS">FPS / Shooter</option><option value="Chess">Strategy / Chess</option><option value="Racing">Racing</option><option value="Puzzle">Puzzle / Casual</option><option value="Sports">Sports</option><option value="Battle Royale">Battle Royale</option></select>
-          <input type="hidden" name="source" value="gfg-landing" />
+          <input type="hidden" name="source" value="player-waitlist" />
           <button type="submit" class="btn-primary" style="width:100%;justify-content:center">Join the Founding Waitlist</button>
         </form>
       </div>
       <div class="success-state" id="modal-success"><div class="success-icon">✅</div><h3>You're on the list!</h3><p>We'll email you the moment the first Dallas tournament goes live. Get ready to play.</p></div>
     </div>
   </div>
+  <!-- Sponsor Inquiry Modal -->
+  <div class="modal-overlay" id="sponsorModal">
+    <div class="modal">
+      <button class="modal-close" onclick="closeSponsorModal()">×</button>
+      <div id="sponsor-form-state">
+        <h3>Sponsor a Tournament</h3>
+        <p id="sponsor-modal-desc">Connect with local DFW gamers and fund real groceries in your brand's name.</p>
+        <form id="sponsor-form-el" action="https://formspree.io/f/xgvewwrb" method="POST" class="modal-form">
+          <input type="text" name="company_name" placeholder="Company / Brand Name" required />
+          <input type="text" name="contact_name" placeholder="Your Name" required />
+          <input type="email" name="email" placeholder="Work Email" required />
+          <input type="tel" name="phone" placeholder="Phone Number (Optional)" />
+          <input type="hidden" id="sponsor-package-input" name="selected_package" value="Single Event Sponsor ($500)" />
+          <input type="hidden" name="source" value="b2b-sponsor-inquiry" />
+          <button type="submit" class="btn-primary" style="width:100%;justify-content:center">Submit Sponsorship Inquiry</button>
+        </form>
+      </div>
+      <div class="success-state" id="sponsor-success"><div class="success-icon">🏆</div><h3>Inquiry Received!</h3><p>We'll follow up with your sponsorship package details within 24 hours.</p></div>
+    </div>
+  </div>
   <script>
     function openModal(){document.getElementById('signupModal').classList.add('open')}
     function closeModal(){document.getElementById('signupModal').classList.remove('open');setTimeout(()=>{document.getElementById('modal-form-state').style.display='block';document.getElementById('modal-success').style.display='none'},300)}
     document.getElementById('signupModal').addEventListener('click',function(e){if(e.target===this)closeModal()})
-    // Form submits to Formspree — real signups reach Jayson via email
+
+    function openSponsorModal(pkg){
+      document.getElementById('sponsor-package-input').value = pkg;
+      document.getElementById('sponsor-modal-desc').innerText = `Package: ${pkg}. Fill out the details below to lock in your tournament date.`;
+      document.getElementById('sponsorModal').classList.add('open');
+    }
+    function closeSponsorModal(){
+      document.getElementById('sponsorModal').classList.remove('open');
+      setTimeout(()=>{document.getElementById('sponsor-form-state').style.display='block';document.getElementById('sponsor-success').style.display='none'},300);
+    }
+    document.getElementById('sponsorModal').addEventListener('click',function(e){if(e.target===this)closeSponsorModal()})
+
+    // Handle Player Form
     var form=document.getElementById('modal-form-el');
-    if(form){form.addEventListener('submit',function(e){e.preventDefault();var data=new FormData(form);fetch(form.action,{method:'POST',body:data,headers:{'Accept':'application/json'}}).then(function(r){if(r.ok){document.getElementById('modal-form-state').style.display='none';document.getElementById('modal-success').style.display='block'}else{alert('Something went wrong. Please email us at jaysonquindao@ggloop.io')}}).catch(function(){alert('Something went wrong. Please try again.')})})} 
+    if(form){form.addEventListener('submit',function(e){e.preventDefault();var data=new FormData(form);fetch(form.action,{method:'POST',body:data,headers:{'Accept':'application/json'}}).then(function(r){if(r.ok){document.getElementById('modal-form-state').style.display='none';document.getElementById('modal-success').style.display='block'}else{alert('Submission error. Please try again.')}}).catch(function(){alert('Something went wrong.')})})}
+
+    // Handle Sponsor Form
+    var sForm=document.getElementById('sponsor-form-el');
+    if(sForm){sForm.addEventListener('submit',function(e){e.preventDefault();var data=new FormData(sForm);fetch(sForm.action,{method:'POST',body:data,headers:{'Accept':'application/json'}}).then(function(r){if(r.ok){document.getElementById('sponsor-form-state').style.display='none';document.getElementById('sponsor-success').style.display='block'}else{alert('Submission error. Please try again.')}}).catch(function(){alert('Something went wrong.')})})}
+
     function handleHeroSignup(){var e=document.getElementById('hero-email').value.trim();if(!e||!e.includes('@')){document.getElementById('hero-email').focus();return}document.getElementById('modal-email').value=e;openModal()}
   </script>
 </body>
