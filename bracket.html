@@ -109,7 +109,18 @@
         <div id="payoutSection" style="display:none;" class="payout-box">
           <h4>🏆 Tournament Completed & Results Verified</h4>
           <p id="winnerAnnouncement" style="font-size:0.95rem;margin-bottom:0.75rem;"></p>
-          <div style="font-size:0.85rem;color:var(--muted)">1st: $150 Grocery Card | 2nd: $75 Grocery Card | 3rd: $40 Grocery Card</div>
+          <div style="font-size:0.85rem;color:var(--muted);margin-bottom:1rem;">1st: $150 Grocery Card | 2nd: $75 Grocery Card | 3rd: $40 Grocery Card</div>
+
+          <!-- Tournament Operations Tooling -->
+          <div style="display:flex;gap:0.5rem;justify-content:center;flex-wrap:wrap;">
+            <button class="btn" style="width:auto;padding:0.45rem 0.9rem;font-size:0.85rem;background:#5865F2;color:#fff;" onclick="broadcastToDiscord()">
+              🎮 Broadcast to Discord Webhook
+            </button>
+            <button class="btn btn-secondary" style="width:auto;padding:0.45rem 0.9rem;font-size:0.85rem;margin-top:0;" onclick="exportResultsJSON()">
+              📥 Export JSON Audit
+            </button>
+          </div>
+          <div id="discordStatus" style="font-size:0.8rem;color:var(--primary);margin-top:0.5rem;display:none;"></div>
         </div>
       </div>
     </div>
@@ -272,6 +283,57 @@
       }
 
       container.innerHTML = html;
+    }
+
+    async function broadcastToDiscord() {
+      const webhookUrl = prompt('Enter your Discord Webhook URL:');
+      if (!webhookUrl || !webhookUrl.startsWith('http')) return;
+
+      const finals = matches.filter(m => m.round === 2);
+      const champ = (finals.length > 0 && finals[0].winner) ? finals[0].winner.tag : 'Champion Decided';
+
+      const payload = {
+        embeds: [{
+          title: '🏆 GG Loop Tournament Completed & Verified!',
+          color: 0x10b981,
+          fields: [
+            { name: '🥇 Champion', value: champ, inline: true },
+            { name: '🎮 Roster Size', value: `${players.length} Competitors`, inline: true },
+            { name: '🥗 Rewards Funded', value: '1st: $150 | 2nd: $75 | 3rd: $40 Groceries', inline: false }
+          ],
+          footer: { text: 'Verified via GG Loop Engine (https://djjrip.github.io/gaming-for-groceries/)' }
+        }]
+      };
+
+      try {
+        const statusEl = document.getElementById('discordStatus');
+        statusEl.style.display = 'block';
+        statusEl.innerText = 'Broadcasting to Discord...';
+        await fetch(webhookUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        statusEl.innerText = '✅ Results successfully broadcasted to Discord!';
+      } catch (err) {
+        alert('Failed to send webhook: ' + err.message);
+      }
+    }
+
+    function exportResultsJSON() {
+      const report = {
+        event: 'GG Loop Gaming for Groceries Pilot',
+        timestamp: new Date().toISOString(),
+        totalPlayers: players.length,
+        players: players,
+        matches: matches
+      };
+      const blob = new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `ggloop-tournament-audit-${Date.now()}.json`;
+      a.click();
     }
   </script>
 </body>
