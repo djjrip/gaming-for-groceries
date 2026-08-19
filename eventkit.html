@@ -567,19 +567,20 @@
     try {
       const res = await fetch(this.action, { method: 'POST', body: data, headers: { 'Accept': 'application/json' } });
       if (res.ok) {
-        // Show success + direct to Stripe payment link based on package
+        // Show success + direct to live Stripe payment link
         const stripeLinks = {
-          starter: 'https://buy.stripe.com/test_starter_placeholder',
-          pro: 'https://buy.stripe.com/test_pro_placeholder'
+          starter: 'https://buy.stripe.com/cNi5kEgBd5C05Rlbzd1B603',
+          pro: 'https://buy.stripe.com/cNi5kEgBd5C05Rlbzd1B603'
         };
+        const activeLink = stripeLinks[pkg] || stripeLinks.starter;
         document.getElementById('form-state').style.display = 'none';
         document.getElementById('success-state').style.display = 'block';
         document.getElementById('success-state').innerHTML = `
           <div style="font-size:3rem; margin-bottom:16px;">🎉</div>
           <h3 style="margin-bottom:12px;">Order Details Received!</h3>
           <p style="color:var(--muted2);margin-bottom:24px;">Click below to complete your $${price} payment securely via Stripe. Your Event Kit ships within 24 hours after payment is confirmed.</p>
-          <a href="mailto:jquindao1@icloud.com?subject=Event Kit Payment - ${pkg}&body=I just submitted my event kit order form. Ready to pay $${price} for the ${pkg} package." class="btn-primary" style="display:inline-flex;">💳 Complete Payment ($${price}) →</a>
-          <p style="margin-top:16px;font-size:0.8rem;color:var(--muted);">Or email <a href="mailto:jquindao1@icloud.com" style="color:var(--green);">jquindao1@icloud.com</a> to pay via Venmo, Zelle, or PayPal.</p>
+          <a href="${activeLink}" target="_blank" class="btn-primary" style="display:inline-flex; font-size:1.05rem; padding: 14px 28px;">💳 Pay with Stripe ($${price}) →</a>
+          <p style="margin-top:20px;font-size:0.82rem;color:var(--muted);">Payment handled securely by Stripe for GG LOOP LLC. Or email <a href="mailto:jquindao1@icloud.com" style="color:var(--green);">jquindao1@icloud.com</a> for invoice/wire payment.</p>
         `;
       } else {
         payLabel.textContent = 'Error — try again or email us directly';
